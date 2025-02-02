@@ -2,6 +2,7 @@ package GUI;
 
 import Banking.Operations;
 import Banking.User;
+import Exceptions.AmountException;
 
 import java.sql.Connection;
 import java.util.Scanner;
@@ -25,11 +26,21 @@ public class Menu {
             selection = input.nextInt();
             switch (selection) {
                 case 1: {
-                    Operations.withdrawal(user.getAccount(), connection, input);
+                    try {
+                        Operations.withdrawal(user.getAccount(), connection, input);
+                    } catch (AmountException e) {
+                        System.out.println(e.getMessage());
+                        System.out.println("Withdrawal Failed!");
+                    }
                     break;
                 }
                 case 2: {
-                    Operations.deposit(user.getAccount(), connection, input);
+                    try{
+                        Operations.deposit(user.getAccount(), connection, input);
+                    } catch(AmountException e) {
+                        System.out.println(e.getMessage());
+                        System.out.println("Deposit Failed!");
+                    }
                     break;
                 }
                 case 3: {

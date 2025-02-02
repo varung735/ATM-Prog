@@ -3,6 +3,7 @@ package Banking;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Account {
@@ -51,7 +52,7 @@ public class Account {
         this.type = type;
     }
 
-    public static Account getAccount(int account, Connection connection) {
+    public static Account getAccount(int account, Connection connection) throws SQLException {
         String query = "select * from accounts where account = ?";
 
         Account accountObj = null;
@@ -69,10 +70,10 @@ public class Account {
                         result.getString("type")
                 );
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println(e.getMessage());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
         return accountObj;

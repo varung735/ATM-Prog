@@ -5,13 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Scanner;
 
+import Exceptions.AuthException;
 import GUI.Menu;
 
 public class Auth {
 
-    public static User authenticateUser(Connection connection){
+    public static User authenticateUser(Connection connection) throws AuthException {
         long phone;
-        int pin;
+        int pin = 0;
         String query = "select * from user where phone = ?";
 
         Scanner input = new Scanner(System.in);
@@ -19,7 +20,7 @@ public class Auth {
 
         System.out.print("Enter Your Phone Number : ");
         phone = input.nextLong();
-        System.out.print("Enter Your Secret Pin : ");
+        System.out.print("Enter Your Pin : ");
         pin = input.nextInt();
 
         try {
@@ -37,26 +38,22 @@ public class Auth {
                );
 
                if(user.getName() == null) {
-                   System.out.println("User Doesn't Exists");
+                   throw new AuthException("User Doesnot Exists");
                } else if(pin == user.getPin()) {
                    Menu menu = new Menu();
                    menu.Options(user, connection, input);
                } else {
-                   System.out.println("Entered Wrong Pin");
+                   throw new AuthException("Entered Wrong Pin");
                }
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println(e.getMessage());
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
         return user;
     }
-
-//    public static void logout(Connection connection, Scanner input) {
-//
-//    }
 
 }
